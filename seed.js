@@ -24,6 +24,18 @@ const SEED_PICKS = {
   "Ross": [
     "Texas/NC State|11|West", "South Florida|11|East", "VCU|11|South", "Santa Clara|10|Midwest",
     "Tennessee|6|Midwest", "Kennesaw St|14|West", "Akron|12|Midwest", "Ohio St|8|East"
+  ],
+  "Gil": [
+    "Michigan St|3|East", "Houston|2|South", "Iowa St|2|Midwest", "Purdue|2|West",
+    "Alabama|4|Midwest", "Kansas|4|East", "Nebraska|4|South", "Wisconsin|5|West"
+  ],
+  "Peter": [
+    "Florida|1|South", "Miami FL|7|West", "Illinois|3|South", "St. John's|5|East",
+    "BYU|6|West", "Tennessee|6|Midwest", "VCU|11|South", "Akron|12|Midwest"
+  ],
+  "Keith": [
+    "Arizona|1|West", "Houston|2|South", "VCU|11|South", "Duke|1|East",
+    "UConn|2|East", "Gonzaga|3|West", "Tennessee|6|Midwest", "Michigan|1|Midwest"
   ]
 };
 
