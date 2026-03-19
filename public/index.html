@@ -287,10 +287,7 @@ body::before {
   width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
 /* Seed-based colors: blue (top seeds) → gold (bottom seeds) */
-.team-pill.seed-top .seed { background: #1e40af; }
-.team-pill.seed-mid .seed { background: #6366f1; }
-.team-pill.seed-low .seed { background: #d97706; }
-.team-pill.seed-bottom .seed { background: #f59e0b; color: #1a1e2e; }
+/* Gold gradient: darker for low seeds, brighter for high seeds */
 .team-pill .pts { color: var(--green); font-weight: 700; font-size: 11px; }
 .team-pill.has-pts { background: var(--green-light); border-color: #a7f3d0; }
 .team-pill.has-pts .seed { background: var(--green) !important; }
@@ -737,10 +734,15 @@ function aliveCount(person) {
 }
 
 function seedClass(seed) {
-  if (seed <= 4) return 'seed-top';
-  if (seed <= 8) return 'seed-mid';
-  if (seed <= 12) return 'seed-low';
-  return 'seed-bottom';
+  return 'seed-gold';
+}
+function getSeedGoldColor(seed) {
+  // Darker gold (low seed/top teams) to bright gold (high seed/underdogs)
+  const t = (seed - 1) / 15; // 0 for seed 1, 1 for seed 16
+  const r = Math.round(140 + t * 115); // 140 → 255
+  const g = Math.round(100 + t * 93);  // 100 → 193
+  const b = Math.round(10 + t * 10);   // 10 → 20
+  return `rgb(${r},${g},${b})`;
 }
 
 function isUpset(tk) {
@@ -858,8 +860,9 @@ function renderLeaderboard() {
       const pts = s.details[tk]||0;
       const elim = isEliminated(tk);
       const sc = seedClass(t.seed);
+      const goldBg = (!pts && !elim) ? `style="background:${getSeedGoldColor(t.seed)}"` : '';
       html += `<span class="team-pill ${sc}${pts>0?' has-pts':''}${elim?' eliminated':''}">
-        <span class="seed">${t.seed}</span>${t.name}${pts>0?`<span class="pts">+${pts}</span>`:''}
+        <span class="seed" ${goldBg}>${t.seed}</span>${t.name}${pts>0?`<span class="pts">+${pts}</span>`:''}
       </span>`;
     }
     html += '</div>';
@@ -924,7 +927,7 @@ function renderPicks() {
         const elim = isEliminated(tk);
         html += `<div class="team-option${selected?' selected':''}${disabled?' disabled':''}${elim?' eliminated-pick':''}"
           onclick="${disabled && !selected?'':state.picksLocked?'':`togglePick('${activePerson}','${tk.replace(/'/g,"\\'")}')`}">
-          <span class="seed-badge">${seed}</span>
+          <span class="seed-badge" style="background:${getSeedGoldColor(seed)};color:#fff;border-color:${getSeedGoldColor(seed)}">${seed}</span>
           <span class="team-name-text">${name}</span>
           <span class="check">\u2713</span>
         </div>`;
@@ -1028,7 +1031,7 @@ function renderH2H() {
     if (shared.length) {
       html += `<div style="margin-bottom:12px"><div style="font-weight:700;font-size:13px;margin-bottom:6px">\u{1F91D} Shared Picks (${shared.length})</div>`;
       html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
-      for (const tk of shared) { const t=parseKey(tk); const e=isEliminated(tk); html += `<span class="team-pill${e?' eliminated':''}""><span class="seed">${t.seed}</span>${t.name}</span>`; }
+      for (const tk of shared) { const t=parseKey(tk); const e=isEliminated(tk); const gb=!e?`style="background:${getSeedGoldColor(t.seed)}"`:''; html += `<span class="team-pill${e?' eliminated':''}"><span class="seed" ${gb}>${t.seed}</span>${t.name}</span>`; }
       html += '</div></div>';
     }
 
