@@ -63,10 +63,15 @@ body::after {
 /* ── Header ── */
 .header {
   background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+  background-size: 200% 200%;
+  animation: headerShift 8s ease infinite;
   padding: 28px 16px 20px;
   text-align: center;
   position: relative;
   overflow: hidden;
+}
+@keyframes headerShift {
+  0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
 }
 .header::before {
   content: '';
@@ -189,8 +194,9 @@ body::after {
 .tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(79,70,229,0.35); }
 .tab-btn:hover:not(.active) { color: var(--text); background: var(--surface2); }
 .tab-panel { display: none; }
-.tab-panel.active { display: block; animation: fadeUp 0.3s ease; }
+.tab-panel.active { display: block; animation: tabSlideIn 0.35s cubic-bezier(0.22,1,0.36,1); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes tabSlideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
 @keyframes popIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
 
 /* ── Player colors ── */
@@ -203,11 +209,15 @@ body::after {
   box-shadow: var(--shadow);
   overflow: hidden;
   margin-bottom: 10px;
-  transition: box-shadow 0.2s, transform 0.2s;
-  animation: popIn 0.3s ease both;
+  transition: box-shadow 0.3s, transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.3s;
+  animation: slideInCard 0.4s ease both;
 }
-.lb-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-.lb-card.leader { box-shadow: var(--shadow-lg), 0 0 0 2px var(--gold); background: linear-gradient(135deg, #fffbeb 0%, #fff 40%); }
+@keyframes slideInCard {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.lb-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.lb-card.leader { box-shadow: var(--shadow-lg), 0 0 0 2px var(--gold), 0 0 20px rgba(217,119,6,0.15); background: linear-gradient(135deg, #fffbeb 0%, #fff 40%); }
 .lb-main { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; }
 .lb-rank {
   font-size: 13px; font-weight: 800; color: #fff;
@@ -219,7 +229,25 @@ body::after {
 .lb-card:nth-child(3) .lb-rank { background: linear-gradient(135deg,#d97706,#b45309); }
 .lb-info { flex: 1; }
 .lb-name { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
-.lb-card.leader .lb-name::after { content: ' \1F451'; font-size: 13px; }
+.lb-card.leader .lb-name { position: relative; }
+.lb-card.leader .lb-name::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 20px;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d97706'%3E%3Cpath d='M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3a1 1 0 01-1 1H6a1 1 0 01-1-1v-1h14v1z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+  animation: crownBounce 2s ease-in-out infinite;
+}
+@keyframes crownBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+
+/* Score counter animation */
+.score-animate {
+  display: inline-block;
+  animation: scoreRoll 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes scoreRoll { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 .lb-scores { text-align: right; }
 .lb-total {
   font-size: 28px; font-weight: 900; letter-spacing: -1px; line-height: 1;
@@ -233,6 +261,19 @@ body::after {
 .lb-stat-label { display: block; font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
 .lb-stat-alive .lb-stat-val { color: var(--green); }
 .lb-stat-max .lb-stat-val { color: var(--accent); }
+
+/* Progress ring */
+.progress-ring { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+.progress-ring svg { transform: rotate(-90deg); }
+.progress-ring .ring-bg { fill: none; stroke: var(--border); stroke-width: 4; }
+.progress-ring .ring-fill { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+.progress-ring .ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--accent); }
+
+/* Movement arrows */
+.movement-arrow { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; margin-left: 6px; }
+.movement-arrow.up { color: var(--green); }
+.movement-arrow.down { color: var(--red); }
+.movement-arrow.same { color: var(--text-dim); }
 .base-tag { background: var(--accent-light); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 600; }
 .bonus-tag { background: var(--gold-bg); color: var(--gold); padding: 1px 6px; border-radius: 4px; font-weight: 600; }
 .lb-expand { padding: 0 20px 14px; display: none; }
@@ -242,18 +283,28 @@ body::after {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px 5px 5px; background: var(--surface2);
   border-radius: 20px; font-size: 12px; font-weight: 500; border: 1px solid var(--border);
-  transition: all 0.15s;
+  transition: all 0.25s cubic-bezier(0.22,1,0.36,1); cursor: default;
 }
-.team-pill:hover { border-color: var(--accent); transform: translateY(-1px); }
+.team-pill:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 6px 16px rgba(0,0,0,0.1); border-color: var(--accent); }
 .team-pill .seed {
-  background: var(--accent); color: #fff; font-size: 10px; font-weight: 800;
+  color: #fff; font-size: 10px; font-weight: 800;
   width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
+/* Seed-based colors: 1-4 gold, 5-8 blue, 9-12 green, 13-16 red */
+.team-pill.seed-top .seed { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.team-pill.seed-mid .seed { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+.team-pill.seed-low .seed { background: linear-gradient(135deg, #059669, #10b981); }
+.team-pill.seed-bottom .seed { background: linear-gradient(135deg, #dc2626, #ef4444); }
+.team-pill.seed-top { border-color: rgba(217,119,6,0.25); }
+.team-pill.seed-mid { border-color: rgba(79,70,229,0.2); }
+.team-pill.seed-low { border-color: rgba(5,150,105,0.2); }
+.team-pill.seed-bottom { border-color: rgba(220,38,38,0.2); }
 .team-pill .pts { color: var(--green); font-weight: 700; font-size: 11px; }
 .team-pill.has-pts { background: var(--green-light); border-color: #a7f3d0; }
-.team-pill.has-pts .seed { background: var(--green); }
-.team-pill.eliminated { opacity: 0.4; text-decoration: line-through; }
-.team-pill.eliminated .seed { background: #9ca3af; }
+.team-pill.has-pts .seed { background: var(--green) !important; }
+.team-pill.eliminated { opacity: 0.35; text-decoration: line-through; filter: grayscale(0.8); }
+.team-pill.eliminated .seed { background: #9ca3af !important; }
+.team-pill.eliminated:hover { transform: none; box-shadow: none; }
 
 /* Round breakdown */
 .round-detail { font-size: 12px; color: var(--text-dim); padding: 6px 10px; background: var(--surface2); border-radius: 8px; margin-bottom: 4px; display: flex; justify-content: space-between; }
@@ -540,6 +591,7 @@ function parseKey(tk){const p=tk.split('|');return{name:p[0],seed:parseInt(p[1])
 
 let state = {picks:{},results:{},activity:[],reactions:[],picksLocked:false,lockDeadline:''};
 let prevScores = {};
+let prevRanks = {};
 let activePerson = null;
 let adminPass = '';
 let adminVerified = false;
@@ -592,6 +644,13 @@ function maxPossible(person) {
 
 function aliveCount(person) {
   return (state.picks[person]||[]).filter(tk => isAlive(tk)).length;
+}
+
+function seedClass(seed) {
+  if (seed <= 4) return 'seed-top';
+  if (seed <= 8) return 'seed-mid';
+  if (seed <= 12) return 'seed-low';
+  return 'seed-bottom';
 }
 
 function isUpset(tk) {
@@ -664,12 +723,31 @@ function renderLeaderboard() {
     const color = PLAYER_COLORS[s.idx];
     const expanded = expandedRows[s.name];
 
-    // Reactions for this person
-    html += `<div class="lb-card${isLeader?' leader':''}" style="animation-delay:${i*0.04}s">
+    // Movement arrows
+    const prevRank = prevRanks[s.name];
+    let arrowHtml = '';
+    if (prevRank !== undefined && prevRank !== i) {
+      if (i < prevRank) arrowHtml = `<span class="movement-arrow up">\u25B2${prevRank-i}</span>`;
+      else arrowHtml = `<span class="movement-arrow down">\u25BC${i-prevRank}</span>`;
+    }
+
+    // Progress ring: % of max score achieved
+    const pct = s.max > 0 ? Math.round((s.total / s.max) * 100) : 0;
+    const circ = 2 * Math.PI * 20; // radius=20
+    const offset = circ - (pct / 100) * circ;
+
+    html += `<div class="lb-card${isLeader?' leader':''}" style="animation-delay:${i*0.06}s">
       <div class="lb-main" onclick="toggleExpand('${s.name}')">
         <div class="lb-rank">${i+1}</div>
+        <div class="progress-ring">
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="20"/>
+            <circle class="ring-fill" cx="26" cy="26" r="20" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" style="stroke:${color}"/>
+          </svg>
+          <div class="ring-text">${pct}%</div>
+        </div>
         <div class="lb-info">
-          <div class="lb-name" style="color:${color}">${s.name}</div>
+          <div class="lb-name" style="color:${color}">${s.name}${arrowHtml}</div>
           <div class="lb-breakdown" style="margin-top:2px">
             <span class="base-tag">${s.base} base</span>
             <span class="bonus-tag">${s.bonus} bonus</span>
@@ -680,7 +758,7 @@ function renderLeaderboard() {
           <div class="lb-stat-item lb-stat-max"><span class="lb-stat-val">${s.max}</span><span class="lb-stat-label">max pts</span></div>
         </div>
         <div class="lb-scores">
-          <div class="lb-total">${s.total}</div>
+          <div class="lb-total score-animate">${s.total}</div>
           <div style="font-size:11px;color:var(--text-dim);text-align:right">pts</div>
         </div>
       </div>
@@ -689,7 +767,8 @@ function renderLeaderboard() {
       const t = parseKey(tk);
       const pts = s.details[tk]||0;
       const elim = isEliminated(tk);
-      html += `<span class="team-pill${pts>0?' has-pts':''}${elim?' eliminated':''}">
+      const sc = seedClass(t.seed);
+      html += `<span class="team-pill ${sc}${pts>0?' has-pts':''}${elim?' eliminated':''}">
         <span class="seed">${t.seed}</span>${t.name}${pts>0?`<span class="pts">+${pts}</span>`:''}
       </span>`;
     }
@@ -706,6 +785,9 @@ function renderLeaderboard() {
 
   if (!scored.some(s=>(state.picks[s.name]||[]).length)) html = `<div class="empty-msg"><div class="empty-icon">\u{1F3C0}</div>No picks yet.<br>Head to the <strong>Picks</strong> tab to get started!</div>`;
   el.innerHTML = html;
+
+  // Save current ranks for movement arrows on next render
+  scored.forEach((s,i) => { prevRanks[s.name] = i; });
 }
 
 function toggleExpand(name) { expandedRows[name] = !expandedRows[name]; renderLeaderboard(); }
