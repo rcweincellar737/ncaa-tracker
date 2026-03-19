@@ -227,7 +227,7 @@ body::before {
 .lb-card:nth-child(2) .lb-rank { background: linear-gradient(135deg,#9ca3af,#6b7280); }
 .lb-card:nth-child(3) .lb-rank { background: linear-gradient(135deg,#d97706,#b45309); }
 .lb-info { flex: 1; }
-.lb-name { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+.lb-name { font-weight: 700; font-size: 17px; letter-spacing: -0.3px; color: var(--text); }
 .lb-card.leader .lb-name { position: relative; }
 .lb-card.leader .lb-name::before {
   content: '';
@@ -249,24 +249,21 @@ body::before {
 @keyframes scoreRoll { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 .lb-scores { text-align: right; }
 .lb-total {
-  font-size: 28px; font-weight: 900; letter-spacing: -1px; line-height: 1;
-  background: linear-gradient(135deg, var(--accent), #7c3aed);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-size: 30px; font-weight: 900; letter-spacing: -1px; line-height: 1;
+  color: var(--text);
 }
 .lb-breakdown { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; gap: 4px; }
 .lb-stats { display: flex; gap: 12px; margin-right: 8px; }
 .lb-stat-item { text-align: center; min-width: 50px; }
-.lb-stat-val { display: block; font-size: 18px; font-weight: 800; line-height: 1.1; }
+.lb-stat-val { display: block; font-size: 20px; font-weight: 800; line-height: 1.1; color: var(--text); }
 .lb-stat-label { display: block; font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
-.lb-stat-alive .lb-stat-val { color: var(--green); }
-.lb-stat-max .lb-stat-val { color: var(--accent); }
 
 /* Progress ring */
 .progress-ring { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
 .progress-ring svg { transform: rotate(-90deg); }
 .progress-ring .ring-bg { fill: none; stroke: var(--border); stroke-width: 4; }
 .progress-ring .ring-fill { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
-.progress-ring .ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--accent); }
+.progress-ring .ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--text); }
 
 /* Movement arrows */
 .movement-arrow { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; margin-left: 6px; }
@@ -289,15 +286,11 @@ body::before {
   color: #fff; font-size: 10px; font-weight: 800;
   width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
-/* Seed-based colors: 1-4 gold, 5-8 blue, 9-12 green, 13-16 red */
-.team-pill.seed-top .seed { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.team-pill.seed-mid .seed { background: linear-gradient(135deg, #4f46e5, #6366f1); }
-.team-pill.seed-low .seed { background: linear-gradient(135deg, #059669, #10b981); }
-.team-pill.seed-bottom .seed { background: linear-gradient(135deg, #dc2626, #ef4444); }
-.team-pill.seed-top { border-color: rgba(217,119,6,0.25); }
-.team-pill.seed-mid { border-color: rgba(79,70,229,0.2); }
-.team-pill.seed-low { border-color: rgba(5,150,105,0.2); }
-.team-pill.seed-bottom { border-color: rgba(220,38,38,0.2); }
+/* Seed-based colors: dark (top seeds) to light (bottom seeds) */
+.team-pill.seed-top .seed { background: #1e293b; }
+.team-pill.seed-mid .seed { background: #475569; }
+.team-pill.seed-low .seed { background: #94a3b8; }
+.team-pill.seed-bottom .seed { background: #cbd5e1; color: #334155; }
 .team-pill .pts { color: var(--green); font-weight: 700; font-size: 11px; }
 .team-pill.has-pts { background: var(--green-light); border-color: #a7f3d0; }
 .team-pill.has-pts .seed { background: var(--green) !important; }
@@ -750,7 +743,7 @@ function renderLeaderboard() {
           <div class="ring-text">${pct}%</div>
         </div>
         <div class="lb-info">
-          <div class="lb-name" style="color:${color}">${s.name}${arrowHtml}</div>
+          <div class="lb-name">${s.name}${arrowHtml}</div>
           <div class="lb-breakdown" style="margin-top:2px">
             <span class="base-tag">${s.base} base</span>
             <span class="bonus-tag">${s.bonus} bonus</span>
