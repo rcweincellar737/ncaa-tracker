@@ -247,12 +247,12 @@ body::before {
   animation: scoreRoll 0.6s cubic-bezier(0.22,1,0.36,1);
 }
 @keyframes scoreRoll { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-.lb-scores { text-align: right; }
+.lb-scores { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
 .lb-total {
-  font-size: 30px; font-weight: 900; letter-spacing: -1px; line-height: 1;
+  font-size: 42px; font-weight: 900; letter-spacing: -1.5px; line-height: 1;
   color: var(--text);
 }
-.lb-breakdown { font-size: 11px; color: var(--text-dim); margin-top: 2px; display: flex; gap: 4px; }
+.lb-breakdown { font-size: 11px; color: var(--text-dim); margin-top: 4px; display: flex; gap: 6px; justify-content: flex-end; }
 .lb-stats { display: flex; gap: 12px; margin-right: 8px; }
 .lb-stat-item { text-align: center; min-width: 50px; }
 .lb-stat-val { display: block; font-size: 20px; font-weight: 800; line-height: 1.1; color: var(--text); }
@@ -588,7 +588,7 @@ body::before {
 
 @media (max-width:600px) {
   .people-grid{grid-template-columns:repeat(2,1fr)} .team-grid{grid-template-columns:1fr}
-  .result-team{min-width:120px} .lb-total{font-size:22px} .header h1{font-size:22px}
+  .result-team{min-width:120px} .lb-total{font-size:30px} .header h1{font-size:22px}
   .h2h-grid{grid-template-columns:1fr}
 }
 </style>
@@ -841,10 +841,6 @@ function renderLeaderboard() {
         </div>
         <div class="lb-info">
           <div class="lb-name">${s.name}${arrowHtml}</div>
-          <div class="lb-breakdown" style="margin-top:2px">
-            <span class="base-tag">${s.base} base</span>
-            <span class="bonus-tag">${s.bonus} bonus</span>
-          </div>
         </div>
         <div class="lb-stats">
           <div class="lb-stat-item lb-stat-alive"><span class="lb-stat-val">${s.alive}/${picks.length}</span><span class="lb-stat-label">alive</span></div>
@@ -852,7 +848,10 @@ function renderLeaderboard() {
         </div>
         <div class="lb-scores">
           <div class="lb-total score-animate">${s.total}</div>
-          <div style="font-size:11px;color:var(--text-dim);text-align:right">pts</div>
+          <div class="lb-breakdown">
+            <span class="base-tag">${s.base} base</span>
+            <span class="bonus-tag">${s.bonus} bonus</span>
+          </div>
         </div>
       </div>
       <div class="lb-teams" style="padding-left:56px">`;
