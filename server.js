@@ -120,6 +120,22 @@ const PORT = process.env.PORT || 3000;
 
 db.init().then(() => {
   seedIfEmpty(db);
+
+  // Auto-sync scores from ESPN every 5 minutes
+  async function autoSync() {
+    try {
+      const result = await syncScores(db);
+      if (result.updated && result.updated.length > 0) {
+        console.log(`Auto-sync: updated ${result.updated.length} results`);
+      }
+    } catch (e) {
+      console.error('Auto-sync error:', e.message);
+    }
+  }
+  // Run immediately on startup, then every 5 minutes
+  autoSync();
+  setInterval(autoSync, 5 * 60 * 1000);
+
   app.listen(PORT, () => console.log(`NCAA Tracker running on http://localhost:${PORT}`));
 }).catch(err => {
   console.error('Failed to initialize database:', err);
