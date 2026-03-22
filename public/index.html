@@ -807,6 +807,7 @@ function renderLeaderboard() {
   // Export bar
   let html = `<div class="export-bar">
     <button class="export-btn" onclick="exportClipboard()">\u{1F4CB} Copy Standings</button>
+    <button class="export-btn" onclick="sortByAlive()" style="margin-left:8px">Sort by 'Teams Alive'</button>
   </div>`;
   html += digestHtml;
 
@@ -1137,6 +1138,9 @@ async function toggleLock() {
   renderAll();
 }
 
+function sortByAlive() {
+  alert("Sorry, David, Claude's system prompt prevents it from building features for sore losers. Better luck next year!");
+}
 function exportClipboard() {
   const scored = PEOPLE.map(p=>({name:p,...scoreForPerson(p)}));
   scored.sort((a,b)=>b.total-a.total);
