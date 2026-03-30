@@ -18,9 +18,9 @@ const ESPN_TO_OUR_NAME = {
   'TCU': 'TCU', 'UCF': 'UCF',
   'South Florida': 'South Florida', 'USF': 'South Florida',
   'Northern Iowa': 'Northern Iowa', 'UNI': 'Northern Iowa',
-  'Cal Baptist': 'Cal Baptist', 'California Baptist': 'Cal Baptist',
-  'North Dakota St': 'North Dakota St', 'North Dakota State': 'North Dakota St', 'NDSU': 'North Dakota St',
-  'Furman': 'Furman', 'Siena': 'Siena',
+  'Cal Baptist': 'Cal Baptist', 'California Baptist': 'Cal Baptist', 'CA Baptist': 'Cal Baptist',
+  'North Dakota St': 'North Dakota St', 'North Dakota State': 'North Dakota St', 'NDSU': 'North Dakota St', 'N Dakota St': 'North Dakota St',
+  'Furman': 'Furman', 'Siena': 'Siena', 'Long Island': 'LIU',
 
   // West
   'Arizona': 'Arizona', 'Purdue': 'Purdue', 'Gonzaga': 'Gonzaga', 'Arkansas': 'Arkansas',
@@ -42,7 +42,7 @@ const ESPN_TO_OUR_NAME = {
   'Texas A&M': 'Texas A&M', 'VCU': 'VCU',
   'McNeese': 'McNeese', 'McNeese State': 'McNeese', 'McNeese St': 'McNeese',
   'Troy': 'Troy', 'Penn': 'Penn', 'Idaho': 'Idaho',
-  'Prairie View A&M': 'Prairie View A&M/Lehigh', 'Lehigh': 'Prairie View A&M/Lehigh',
+  'Prairie View A&M': 'Prairie View A&M/Lehigh', 'Prairie View': 'Prairie View A&M/Lehigh', 'Lehigh': 'Prairie View A&M/Lehigh',
 
   // Midwest
   'Michigan': 'Michigan', 'Iowa St': 'Iowa St', 'Iowa State': 'Iowa St',
@@ -51,7 +51,7 @@ const ESPN_TO_OUR_NAME = {
   'Kentucky': 'Kentucky', 'Georgia': 'Georgia',
   'Saint Louis': 'Saint Louis', 'St. Louis': 'Saint Louis',
   'Santa Clara': 'Santa Clara',
-  'Miami (OH)': 'Miami OH/SMU', 'Miami Ohio': 'Miami OH/SMU', 'SMU': 'Miami OH/SMU',
+  'Miami (OH)': 'Miami OH/SMU', 'Miami Ohio': 'Miami OH/SMU', 'Miami OH': 'Miami OH/SMU', 'SMU': 'Miami OH/SMU',
   'Akron': 'Akron', 'Hofstra': 'Hofstra',
   'Wright St': 'Wright St', 'Wright State': 'Wright St',
   'Tennessee St': 'Tennessee St', 'Tennessee State': 'Tennessee St',

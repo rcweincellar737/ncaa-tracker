@@ -672,6 +672,8 @@ const ROUNDS = [
 ];
 const BASE_ROUNDS = ['r1','r2','s16','e8'];
 const BONUS_ROUNDS = {ff:6,finals:8,champ:10};
+// Bonus is earned by REACHING a round, meaning winning the prior round
+const BONUS_TRIGGER = {e8:6, ff:8, finals:10}; // winning e8 = reached FF (+6), winning ff = reached finals (+8), winning finals = champ (+10)
 const ALL_TEAM_KEYS = [];
 for (const r of Object.keys(TEAMS)) for (const [n,s] of TEAMS[r]) ALL_TEAM_KEYS.push(`${n}|${s}|${r}`);
 
@@ -694,8 +696,9 @@ function scoreForPerson(person) {
     const seed = parseInt(tk.split('|')[1]);
     let teamBase = 0;
     BASE_ROUNDS.forEach(rid => { if(state.results[rid]?.[tk]){teamBase+=seed; roundPts[rid]=(roundPts[rid]||0)+seed;} });
-    for (const [rid,bv] of Object.entries(BONUS_ROUNDS)) {
-      if(state.results[rid]?.[tk]){bonus+=bv; roundPts[rid]=(roundPts[rid]||0)+bv;}
+    // Bonus for REACHING a round: winning e8 = reached FF (+6), winning ff = reached finals (+8), winning finals = champ (+10)
+    for (const [triggerRid,bv] of Object.entries(BONUS_TRIGGER)) {
+      if(state.results[triggerRid]?.[tk]){bonus+=bv; const bonusLabel=triggerRid==='e8'?'ff':triggerRid==='ff'?'finals':'champ'; roundPts[bonusLabel]=(roundPts[bonusLabel]||0)+bv;}
     }
     base+=teamBase; details[tk]=teamBase;
   }
@@ -723,8 +726,9 @@ function maxPossible(person) {
     for (const rid of BASE_ROUNDS) {
       if (!state.results[rid]?.[tk]) max += seed;
     }
-    for (const [rid,bv] of Object.entries(BONUS_ROUNDS)) {
-      if (!state.results[rid]?.[tk]) max += bv;
+    // Max bonus: if team hasn't yet triggered the bonus (by winning the prior round), it's still possible
+    for (const [triggerRid,bv] of Object.entries(BONUS_TRIGGER)) {
+      if (!state.results[triggerRid]?.[tk]) max += bv;
     }
   }
   return max;
